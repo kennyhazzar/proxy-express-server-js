@@ -3,9 +3,8 @@ import router from './routes/index.js'
 import 'dotenv/config'
 
 const app = express()
-const PORT = 8080
 
 app.use(express.json())
 app.use(router)
 
-app.listen(PORT, () => console.log(`server has been started in ${PORT}`))
+app.listen(process.env.PORT, () => console.log(`server has been started in ${process.env.PORT}`))
