@@ -51,6 +51,10 @@ router.get('/index.php', async (req, res) => {
     if (req.query.hasOwnProperty('/api/v2/get_user_by_email')) {
         try {
 
+            if (!req.query.email) {
+                return res.status(400).send({ error: "email are required" })
+            }
+
             const token = req.headers.authorization
 
             if (!token) {
