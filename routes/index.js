@@ -1,5 +1,5 @@
 ﻿import axios from 'axios'
-import { response, Router } from 'express'
+import { Router } from 'express'
 const router = new Router()
 import 'dotenv/config'
 
@@ -73,8 +73,46 @@ router.get('/index.php', async (req, res) => {
             return res.status(401).send({ error: error.response.data.error })
         }
     }
+    // index.php?/api/v2/get_attachments_for_run/{run_id}
+    if (Object.getOwnPropertyNames(req.query).find(apiPath => apiPath.match(/\/api\/v2\/get_attachment\/\d{3}/))) {
+        try {
 
+            const token = req.headers.authorization
+
+            if (!token) {
+                return res.status(401).send({ error: "token does not exist" })
+            }
+
+            const apiPath = Object.getOwnPropertyNames(req.query).find(apiPath => apiPath.match(/\/api\/v2\/get_attachment\/\d{3}/))
+            console.log(apiPath)
+            const attachmentId = getId(apiPath)
+            console.log(attachmentId)
+
+            const response = await axios.get(`https://${process.env.server}/index.php?/api/v2/get_attachment/${attachmentId}`, {
+                headers: {
+                    "Authorization": token,
+                    "Content-Type": "application/json"
+                }
+            })
+
+            return res.send(response.data)
+        } catch (error) {
+            return res.status(401).send({ error: error.response.data.error })
+        }
+    }
     return res.status(500).send({ error: "server error" })
+
+    function getId(apiLink) {
+        const id = []
+        for (let index = apiLink.length; index >= 0; index--) {
+            const element = apiLink[index]
+            if (element !== '/') {
+                id.push(element)
+            } else if (element === '/') {
+                return id.reverse().join('')
+            }
+        }
+    }
 })
 
 export default router
