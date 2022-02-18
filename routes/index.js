@@ -130,6 +130,33 @@ router.get('/index.php', async (req, res) => {
         }
     }
 
+    // index.php?/api/v2/get_user/{user_id}
+    if (Object.getOwnPropertyNames(req.query).find(apiPath => apiPath.match(/\/api\/v2\/get_user\/\d{1,9}/))) {
+        try {
+
+            const token = req.headers.authorization
+
+            if (!token) {
+                return res.status(401).send({ error: "token does not exist" })
+            }
+
+            const apiPath = Object.getOwnPropertyNames(req.query).find(apiPath => apiPath.match(/\/api\/v2\/get_user\/\d{1,9}/))
+            const userId = getId(apiPath)
+
+            const response = await axios.get(`https://${process.env.server}/index.php?/api/v2/get_user/${userId}`, {
+                headers: {
+                    "Authorization": token,
+                    "Content-Type": "application/json"
+                }
+            })
+
+            return res.send(response.data)
+        } catch (error) {
+            console.log(error)
+            return res.status(401).send({ error: error.response })
+        }
+    }
+
     return res.status(500).send({ error: "server error" })
 
     function getId(apiLink) {
