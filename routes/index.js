@@ -26,6 +26,8 @@ router.get('/index.php', async (req, res) => {
             return res.status(401).send({ error: error.response.data.error })
         }
     }
+
+    // if (req.query)
     // get_statuses
     if (req.query.hasOwnProperty('/api/v2/get_statuses')) {
         try {
@@ -73,8 +75,8 @@ router.get('/index.php', async (req, res) => {
             return res.status(401).send({ error: error.response.data.error })
         }
     }
-    // index.php?/api/v2/get_attachments_for_run/{run_id}
-    if (Object.getOwnPropertyNames(req.query).find(apiPath => apiPath.match(/\/api\/v2\/get_attachment\/\d{3}/))) {
+    // index.php?/api/v2/get_attachment/{attachment_id}
+    if (Object.getOwnPropertyNames(req.query).find(apiPath => apiPath.match(/\/api\/v2\/get_attachment\/\d{1,9}/))) {
         try {
 
             const token = req.headers.authorization
@@ -83,7 +85,7 @@ router.get('/index.php', async (req, res) => {
                 return res.status(401).send({ error: "token does not exist" })
             }
 
-            const apiPath = Object.getOwnPropertyNames(req.query).find(apiPath => apiPath.match(/\/api\/v2\/get_attachment\/\d{3}/))
+            const apiPath = Object.getOwnPropertyNames(req.query).find(apiPath => apiPath.match(/\/api\/v2\/get_attachment\/\d{1,9}/))
             console.log(apiPath)
             const attachmentId = getId(apiPath)
             console.log(attachmentId)
@@ -100,6 +102,34 @@ router.get('/index.php', async (req, res) => {
             return res.status(401).send({ error: error.response.data.error })
         }
     }
+
+    // index.php?/api/v2/get_project/{project_id}
+    if (Object.getOwnPropertyNames(req.query).find(apiPath => apiPath.match(/\/api\/v2\/get_project\/\d{1,9}/))) {
+        try {
+
+            const token = req.headers.authorization
+
+            if (!token) {
+                return res.status(401).send({ error: "token does not exist" })
+            }
+
+            const apiPath = Object.getOwnPropertyNames(req.query).find(apiPath => apiPath.match(/\/api\/v2\/get_project\/\d{1,9}/))
+            const projectId = getId(apiPath)
+
+            const response = await axios.get(`https://${process.env.server}/index.php?/api/v2/get_project/${projectId}`, {
+                headers: {
+                    "Authorization": token,
+                    "Content-Type": "application/json"
+                }
+            })
+
+            return res.send(response.data)
+        } catch (error) {
+            console.log(error)
+            return res.status(401).send({ error: error.response })
+        }
+    }
+
     return res.status(500).send({ error: "server error" })
 
     function getId(apiLink) {
