@@ -23,7 +23,7 @@ router.get('/index.php', async (req, res) => {
 
             return res.send(response.data)
         } catch (error) {
-            return res.status(401).send({ error })
+            return res.status(400).send({ error })
         }
     }
 
@@ -46,7 +46,7 @@ router.get('/index.php', async (req, res) => {
 
             return res.send(response.data)
         } catch (error) {
-            return res.status(401).send({ error })
+            return res.status(400).send({ error })
         }
     }
     //get user by email. params: email={email}
@@ -72,7 +72,7 @@ router.get('/index.php', async (req, res) => {
 
             return res.send(response.data)
         } catch (error) {
-            return res.status(401).send({ error })
+            return res.status(400).send({ error })
         }
     }
     // index.php?/api/v2/get_attachment/{attachment_id}
@@ -99,7 +99,7 @@ router.get('/index.php', async (req, res) => {
 
             return res.send(response.data)
         } catch (error) {
-            return res.status(401).send({ error })
+            return res.status(400).send({ error })
         }
     }
 
@@ -126,7 +126,7 @@ router.get('/index.php', async (req, res) => {
             return res.send(response.data)
         } catch (error) {
             console.log(error)
-            return res.status(401).send({ error })
+            return res.status(400).send({ error })
         }
     }
 
@@ -153,7 +153,7 @@ router.get('/index.php', async (req, res) => {
             return res.send(response.data)
         } catch (error) {
             console.log(error)
-            return res.status(401).send({ error })
+            return res.status(400).send({ error })
         }
     }
 
@@ -180,7 +180,7 @@ router.get('/index.php', async (req, res) => {
             return res.send(response.data)
         } catch (error) {
             console.log(error)
-            return res.status(401).send({ error })
+            return res.status(400).send({ error })
         }
     }
 
@@ -207,7 +207,7 @@ router.get('/index.php', async (req, res) => {
             return res.send(response.data)
         } catch (error) {
             console.log(error)
-            return res.status(401).send({ error })
+            return res.status(400).send({ error })
         }
     }
 
@@ -234,7 +234,7 @@ router.get('/index.php', async (req, res) => {
             return res.send(response.data)
         } catch (error) {
             console.log(error)
-            return res.status(401).send({ error })
+            return res.status(400).send({ error })
         }
     }
 
