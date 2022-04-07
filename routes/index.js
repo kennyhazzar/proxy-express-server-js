@@ -180,7 +180,7 @@ router.get('/index.php', async (req, res) => {
             return res.send(response.data)
         } catch (error) {
             console.log(error)
-            return res.status(401).send({ error: error.response })
+            return res.status(401).send({ error: error })
         }
     }
 
